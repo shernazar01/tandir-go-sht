@@ -45,10 +45,6 @@ function Navbar(){
             Galereya
           </a>
 
-          <a href="#reviews">
-            Fikrlar
-          </a>
-
           <a href="#contact">
             Aloqa
           </a>
