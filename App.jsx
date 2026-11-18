@@ -52,28 +52,51 @@ function App() {
   const changeQty = (id, delta) => setCart(prev => prev.map(x => x.id === id ? {...x, qty:x.qty+delta} : x).filter(x => x.qty > 0));
   const removeFromCart = id => setCart(prev => prev.filter(item => item.id !== id));
   const clearCart = () => setCart([]);
-  const submitOrder = async e => {
+  const submitOrder = e => {
     e.preventDefault();
-    if (!cart.length) { setStatus(t.empty); return; }
-    setBusy(true); setStatus('');
-    const order = { ...form, type:orderType, items:cart.map(({id,name,qty,price})=>({id,name,qty,price})), total, language:lang, createdAt:new Date().toISOString() };
-    if (!/^\+?[0-9 ()-]{7,20}$/.test(form.phone.trim())) { setStatus(t.phoneError); setBusy(false); return; }
-    try {
-      let response;
-      try { response = await fetch('/api/orders', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(order) }); } catch { response = null; }
-      if (!response || !response.ok) {
-        const lines = cart.map(x => `${x.name} x ${x.qty} — ${formatPrice(x.price * x.qty)}`).join('\n');
-        const direct = await fetch('https://formsubmit.co/ajax/oshernazar@gmail.com', { method:'POST', headers:{'Content-Type':'application/json', Accept:'application/json'}, body:JSON.stringify({ _subject:`Yangi buyurtma: ${form.name} — ${formatPrice(total)}`, _template:'table', _captcha:'false', Buyurtmachi:form.name, Telefon:form.phone, Turi:orderType === 'delivery' ? 'Yetkazib berish' : 'Olib ketish', Manzil:form.address || '-', Mahsulotlar:lines, Jami:formatPrice(total), Izoh:form.note || '-' }) });
-        const result = await direct.json().catch(() => ({}));
-        if (!direct.ok || result.success === 'false' || result.success === false) throw new Error('email');
-      }
-      setCart([]); setForm({name:'',phone:'',address:'',note:''}); setStatus(t.sent);
-    } catch {
-      const text = `Jarqo‘rg‘on Tandir Go‘shti\nBuyurtmachi: ${form.name}\nTelefon: ${form.phone}\nTuri: ${orderType === 'delivery' ? t.delivery : t.pickup}\nManzil: ${form.address || '-'}\nMahsulotlar: ${cart.map(x=>`${x.name} x ${x.qty}`).join(', ')}\nJami: ${formatPrice(total)}\nIzoh: ${form.note || '-'}`;
-      const wa = import.meta.env.VITE_WHATSAPP_NUMBER;
-      if (wa) { window.open(`https://wa.me/${wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer'); setStatus(t.waReady); }
-      else setStatus(t.noServer + '\n' + text);
-    } finally { setBusy(false); }
+  
+    if (!cart.length) {
+      setStatus(t.empty);
+      return;
+    }
+  
+    if (!/^\+?[0-9 ()-]{7,20}$/.test(form.phone.trim())) {
+      setStatus(t.phoneError);
+      return;
+    }
+  
+    const products = cart
+      .map(item => `${item.name} x ${item.qty} — ${formatPrice(item.price * item.qty)}`)
+      .join('\n');
+  
+    const subject = `Yangi buyurtma: ${form.name.trim()} — ${formatPrice(total)}`;
+  
+    const body = [
+      'JARQO‘RG‘ON TANDIR GO‘SHTI — YANGI BUYURTMA',
+      '',
+      `Buyurtmachi: ${form.name.trim()}`,
+      `Telefon: ${form.phone.trim()}`,
+      `Buyurtma turi: ${orderType === 'delivery' ? 'Yetkazib berish' : 'Olib ketish'}`,
+      `Manzil: ${orderType === 'delivery' ? form.address.trim() : 'Olib ketish'}`,
+      '',
+      'Mahsulotlar:',
+      products,
+      '',
+      `JAMI: ${formatPrice(total)}`,
+      `Izoh: ${form.note.trim() || '-'}`,
+      `Vaqt: ${new Date().toLocaleString()}`
+    ].join('\n');
+  
+    const mailtoUrl =
+      `mailto:oshernazar@gmail.com` +
+      `?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`;
+  
+    window.location.href = mailtoUrl;
+  
+    setStatus(
+      'Email dasturi ochilmoqda. Buyurtmani yuborish uchun email oynasida Send tugmasini bosing.'
+    );
   };
   const navItems = [[t.home,'#home'],[t.about,'#about'],[t.menu,'#menu'],[t.gallery,'#gallery'],[t.contact,'#contact']];
   const nameFor = food => lang === 'ru' ? food.ru : lang === 'en' ? food.en : food.name;
