@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import './App.css';
+import Admin from './Admin.jsx';
 
 const translations = {
   uz: {
@@ -134,7 +135,7 @@ const safeRead = (key, fallback) => {
   }
 };
 
-function App() {
+function Website() {
   const [lang, setLang] = useState(() => {
     const saved = localStorage.getItem('tg-lang');
     return ['uz','ru','en'].includes(saved) ? saved : 'uz';
@@ -209,7 +210,6 @@ function App() {
 
   const clearCart = () => setCart([]);
 
-  // Buyurtmani Supabase bazasiga yuborish
   const submitOrder = async e => {
     e.preventDefault();
 
@@ -666,6 +666,16 @@ function App() {
       </div>
     }
   </>;
+}
+
+function App() {
+  const path = window.location.pathname.replace(/\/+$/, '');
+
+  if (path === '/admin') {
+    return <Admin />;
+  }
+
+  return <Website />;
 }
 
 export default App;
