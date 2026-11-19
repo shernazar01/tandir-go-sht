@@ -1,0 +1,145 @@
+
+.admin-page {
+  min-height: 100vh;
+  padding: 25px;
+  background: #101010;
+  color: #f5f5f5;
+  font-family: Arial, sans-serif;
+}
+
+.admin-login {
+  width: 100%;
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background: #1b1b1b;
+  border: 1px solid #b88a35;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-page h1,
+.admin-page h2,
+.admin-page h3,
+.admin-page h4 {
+  color: #e5b84b;
+}
+
+.admin-login h1 {
+  text-align: center;
+  margin: 0;
+}
+
+.admin-login p {
+  text-align: center;
+  color: #bbb;
+}
+
+.admin-page input,
+.admin-page select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #555;
+  border-radius: 8px;
+  background: #111;
+  color: white;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.admin-page button,
+.admin-actions a {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #d5a83c;
+  color: #17120a;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.admin-page button:hover,
+.admin-actions a:hover {
+  background: #f0c75b;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid #6d5423;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.admin-orders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.admin-order {
+  padding: 20px;
+  background: #1b1b1b;
+  border: 1px solid #59451f;
+  border-radius: 14px;
+  overflow-wrap: anywhere;
+}
+
+.admin-order h3 {
+  margin-top: 0;
+}
+
+.admin-order p {
+  color: #ddd;
+  line-height: 1.5;
+}
+
+.admin-order li {
+  margin-bottom: 8px;
+}
+
+.admin-order label {
+  display: block;
+  margin: 15px 0 8px;
+  color: #e5b84b;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.admin-actions a {
+  flex: 1;
+  text-align: center;
+}
+
+.admin-error {
+  color: #ff7777;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .admin-page {
+    padding: 15px;
+  }
+
+  .admin-header {
+    align-items: flex-start;
+  }
+
+  .admin-header h1 {
+    font-size: 20px;
+  }
+
+  .admin-order {
+    padding: 16px;
+  }
+}
