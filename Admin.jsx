@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from './supabase';
+import './admin.css';
 
 const ADMIN_ID = '7cec38b5-4892-43e0-b20c-db7cdada1d9f';
 
