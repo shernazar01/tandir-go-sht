@@ -185,7 +185,13 @@ export default function Admin() {
 
             <div className="admin-actions">
               <a href={`tel:${order.phone}`}>Qo‘ng‘iroq</a>
-              <a href={`sms:${order.phone}`}>SMS</a>
+              <a
+  href={`sms:${order.phone}?body=${encodeURIComponent(
+    `Assalomu alaykum, ${order.customer_name}! Jarqo‘rg‘on Tandir Go‘shtidan sizga murojaat qilyapmiz. Buyurtmangiz holati: ${statuses[order.status] || order.status}. Rahmat!`
+  )}`}
+>
+  SMS
+</a>
             </div>
           </article>
         ))}
